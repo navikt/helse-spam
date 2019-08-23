@@ -6,9 +6,15 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - restore_cache:
+          key: dependency-cache-{{ checksum "pom.xml" }}
       - run:
           name: Bygg
           command: mvn install
+      - save_cache:
+          key: dependency-cache-{{ checksum "pom.xml" }}
+          paths:
+            - ~/.m2
       - run:
           name: Build docker image
           command: |
