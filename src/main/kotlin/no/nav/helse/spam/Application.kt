@@ -20,10 +20,7 @@ fun Application.module(testing: Boolean = false) {
 
     log.info("Here we go...")
 
-    val config = this.environment.config //.configList("no.nav.security.oidc.issuers")
-    println(config)
-
-    routing {
+   routing {
         get("/hello") {
             call.respondText("<b>hello</b>", ContentType.Text.Html)
         }
