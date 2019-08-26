@@ -25,7 +25,15 @@ fun Application.module(testing: Boolean = false) {
             call.respondText("<b>hello</b>", ContentType.Text.Html)
         }
 
-        static {
+       get("/isalive") {
+           call.respondText("ALIVE", ContentType.Text.Plain)
+       }
+
+       get("/isready") {
+           call.respondText("READY", ContentType.Text.Plain)
+       }
+
+       static {
             defaultResource("index.html", "static")
             resources("static")
         }
