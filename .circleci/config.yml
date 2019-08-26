@@ -20,10 +20,12 @@ jobs:
           command: |
             export COMMIT_SHORT=$(git rev-parse --short HEAD)
             export DOCKER_TAG=navikt/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_PROJECT_REPONAME}:$COMMIT_SHORT
+            echo "DOCKER_TAG=$DOCKER_TAG"
             docker build -t docker.pkg.github.com/$DOCKER_TAG .
       - run:
           name: Docker push
           command: |
+            echo "DOCKER_TAG=$DOCKER_TAG"
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin docker.pkg.github.com
             echo "Pushing with tag $DOCKER_TAG"
             docker push docker.pkg.github.com/$DOCKER_TAG
