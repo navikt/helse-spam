@@ -19,7 +19,14 @@ jobs:
           name: Build docker image
           command: |
             export COMMIT_SHORT=$(git rev-parse --short HEAD)
-            docker build -t docker.pkg.github.com/navikt/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_PROJECT_REPONAME}:$COMMIT_SHORT .
+            export DOCKER_TAG=navikt/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_PROJECT_REPONAME}:$COMMIT_SHORT
+            docker build -t docker.pkg.github.com/$DOCKER_TAG .
+      - run:
+          name: Docker push
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin docker.pkg.github.com
+            echo "Pushing with tag $DOCKER_TAG"
+            docker push docker.pkg.github.com/$DOCKER_TAG
 workflows:
   version: 2
   build_and_release:
