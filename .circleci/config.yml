@@ -19,6 +19,7 @@ jobs:
           name: Setup some ENV
           command: |
             mkdir /tmp/workspace
+            export COMMIT_SHORT=$(git rev-parse --short HEAD)
             echo "DOCKER_TAG=navikt/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_PROJECT_REPONAME}:$COMMIT_SHORT" >> /tmp/workspace/properties.env
             cat /tmp/workspace/properties.env >> $BASH_ENV
       - run:
