@@ -28,9 +28,6 @@
             <id>kotlinx</id>
             <url>https://kotlin.bintray.com/kotlinx</url>
         </repository>
-
-
-
     </repositories>
 
     <dependencies>
@@ -54,7 +51,43 @@
             <artifactId>nimbus-jose-jwt</artifactId>
             <version>7.7</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.arrow-kt</groupId>
+            <artifactId>arrow-core-data</artifactId>
+            <version>0.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.helse</groupId>
+            <artifactId>maksdato</artifactId>
+            <version>ae7c5ad</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-kotlin</artifactId>
+            <version>2.9.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.9.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>no.nav.helse.sykepenger.lovverk</groupId>
+            <artifactId>sykepenger-inngangsvilkar</artifactId>
+            <version>2018-12-20-101.4f8f899</version>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.helse.sykepenger.lovverk</groupId>
+            <artifactId>sykepenger-beregning</artifactId>
+            <version>2018-12-20-101.8ef150a</version>
+        </dependency>
 
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
