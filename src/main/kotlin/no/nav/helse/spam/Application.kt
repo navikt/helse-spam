@@ -20,6 +20,9 @@ fun Application.module(testing: Boolean = false) {
 
     log.info("Here we go...")
 
+    //val env = environmentFrom(this.environment.config)
+    //val producer = SpamKafkaProducer(env)
+
    routing {
         get("/hello") {
             call.respondText("<b>hello</b>", ContentType.Text.Html)
