@@ -28,6 +28,7 @@ fun lagVedtak(aktorId: String,
               arbeidsgiverId:String,
               fom:LocalDate,
               tom:LocalDate,
+              dagsats:Long,
               utbetalTilArbeidsgiver:Boolean = true) : SykepengeVedtak {
 
     val soknadId = UUID.randomUUID().toString()
@@ -38,7 +39,7 @@ fun lagVedtak(aktorId: String,
             fom = fom,
             tom = tom,
             grad = 100,
-            dagsats = BigDecimal.valueOf(1300),
+            dagsats = BigDecimal.valueOf(dagsats),
             fordeling = listOf(
                 Fordeling(
                     mottager = mottager,
@@ -145,7 +146,7 @@ fun lagVedtak(aktorId: String,
         ),
         behandlingsId = "spam" + soknadId,
         vedtak = Vedtak(
-
+            perioder = perioder
         )
     )
 

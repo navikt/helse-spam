@@ -1,13 +1,25 @@
 package no.nav.helse.spam
 
-import io.ktor.application.*
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.application.log
+import io.ktor.features.ContentNegotiation
 import io.ktor.http.ContentType
 import io.ktor.http.content.defaultResource
 import io.ktor.http.content.resources
 import io.ktor.http.content.static
-import io.ktor.response.*
+import io.ktor.jackson.jackson
+import io.ktor.request.receive
+import io.ktor.response.respond
+import io.ktor.response.respondText
 import io.ktor.routing.get
+import io.ktor.routing.post
 import io.ktor.routing.routing
+import no.nav.helse.behandling.SykepengeVedtak
+import no.nav.helse.streams.defaultObjectMapper
 import org.slf4j.LoggerFactory
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -20,13 +32,32 @@ fun Application.module(testing: Boolean = false) {
 
     log.info("Here we go...")
 
-    //val env = environmentFrom(this.environment.config)
+    val env = environmentFrom(this.environment.config)
     //val producer = SpamKafkaProducer(env)
+    //producer.sendVedtak(lagEtTullevedtak())
+
+    install(ContentNegotiation) {
+        jackson {
+            enable(SerializationFeature.INDENT_OUTPUT) // Pretty Prints the JSON
+            registerModule(JavaTimeModule())
+            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        }
+    }
 
    routing {
-        get("/hello") {
-            call.respondText("<b>hello</b>", ContentType.Text.Html)
-        }
+       post("/vedtak") {
+           val request:SpamVedtak = call.receive<SpamVedtak>()
+           val vedtak = lagVedtak(
+               aktorId = request.aktorId,
+               fodselsdato = request.fodselsdato,
+               arbeidsgiverId = request.arbeidsgiverId,
+               fom = request.fom,
+               tom = request.tom,
+               dagsats = request.dagsats
+           )
+           log.info(defaultObjectMapper.writeValueAsString(vedtak))
+           call.respond(vedtak)
+       }
 
        get("/isalive") {
            call.respondText("ALIVE", ContentType.Text.Plain)
@@ -42,3 +73,9 @@ fun Application.module(testing: Boolean = false) {
         }
     }
 }
+
+private fun sendVedtak(vedtak: SykepengeVedtak) {
+    log.info("Sender: " + defaultObjectMapper.writeValueAsString(vedtak))
+    //producer.sendVedtak(vedtak)
+}
+

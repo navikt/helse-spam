@@ -3,8 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>SPAMock</title>
+    <script src="jquery-3.4.1.js"></script>
+    <script src="app.js"></script>
+    <link rel="stylesheet" type="text/css" href="app.css" />
 </head>
 <body>
-    hello world
+    <h3>SPAMock</h3>
+
+    <label for="aktorId">AktørID: </label><input id="aktorId"/><br/>
+    <label for="fodselsdato">Fødselsdato: </label><input id="fodselsdato" type="date"/><br/>
+    <label for="arbeidsgiverId">ArbeidsgiverId (orgnr): </label><input id="arbeidsgiverId"/><br/>
+    <label for="fom">Periode F.O.M.: </label><input id="fom" type="date"/><br/>
+    <label for="tom">Periode T.O.M.: </label><input id="tom" type="date"/><br/>
+    <label for="dagsats">Dagsats (kroner): </label><input id="dagsats" type="number"/><br/>
+    <br/>
+    <button id="submitbutton">Opprett og send tulle-vedtak</button><br/>
+
+    <br/>
+    <div id="errorMessage"></div>
+    <div id="infoMessage"></div>
+
 </body>
 </html>

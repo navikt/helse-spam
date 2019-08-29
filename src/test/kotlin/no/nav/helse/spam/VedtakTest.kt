@@ -20,12 +20,14 @@ class VedtakTest {
             fodselsdato = fodselsdato,
             arbeidsgiverId = arbeidsgiverId,
             fom = fom,
-            tom = tom
+            tom = tom,
+            dagsats = 1320
         )
 
         val vedtakString = defaultObjectMapper.writeValueAsString(vedtak)
         println(vedtakString)
 
         assertTrue(vedtakString.contains(aktorId))
+        assertTrue(vedtakString.contains("1320"))
     }
 }
