@@ -6,7 +6,6 @@ import java.time.LocalDate
 data class SpamVedtak(
     val aktorId: String,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    val fodselsdato: LocalDate,
     val arbeidsgiverId: String,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     val fom: LocalDate,

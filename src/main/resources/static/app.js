@@ -7,7 +7,6 @@ $(document).ready(function() {
         $.ajax("/vedtak", {
             data: JSON.stringify({
                 "aktorId": $("#aktorId").val(),
-                "fodselsdato": $("#fodselsdato").val(),
                 "arbeidsgiverId": $("#arbeidsgiverId").val(),
                 "fom": $("#fom").val(),
                 "tom": $("#tom").val(),

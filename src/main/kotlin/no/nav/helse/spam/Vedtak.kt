@@ -24,7 +24,6 @@ import java.time.YearMonth
 import java.util.*
 
 fun lagVedtak(aktorId: String,
-              fodselsdato:LocalDate,
               arbeidsgiverId:String,
               fom:LocalDate,
               tom:LocalDate,
@@ -74,6 +73,7 @@ fun lagVedtak(aktorId: String,
         andreInntektskilder = emptyList()
     )
 
+    val fodselsdato = LocalDate.now().minusYears(25)
     val tpsfakta = Tpsfakta(
         fodselsdato = fodselsdato,
         status = "status",

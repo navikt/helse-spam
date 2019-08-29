@@ -49,7 +49,6 @@ fun Application.module(testing: Boolean = false) {
            val request:SpamVedtak = call.receive<SpamVedtak>()
            val vedtak = lagVedtak(
                aktorId = request.aktorId,
-               fodselsdato = request.fodselsdato,
                arbeidsgiverId = request.arbeidsgiverId,
                fom = request.fom,
                tom = request.tom,
