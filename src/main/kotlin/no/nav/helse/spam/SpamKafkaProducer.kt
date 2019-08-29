@@ -8,6 +8,7 @@ import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.config.SaslConfigs
 import org.apache.kafka.common.config.SslConfigs
 import org.apache.kafka.common.serialization.StringSerializer
+import org.slf4j.LoggerFactory
 import java.io.File
 
 interface SpamKafkaConfig {
@@ -22,6 +23,7 @@ interface SpamKafkaConfig {
 class SpamKafkaProducer(val config : SpamKafkaConfig) {
 
     val vedtakTopic = "aapen-helse-sykepenger-vedtak"
+    private val log = LoggerFactory.getLogger("SpamKafkaProducer")
 
     val producer : KafkaProducer<String, String>
 
@@ -41,6 +43,7 @@ class SpamKafkaProducer(val config : SpamKafkaConfig) {
                 put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT")
             } else {
                 put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL")
+                log.info("navTruststorePath: ${config.navTruststorePath}")
                 put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, File(config.navTruststorePath!!).absolutePath)
                 put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, config.navTruststorePassword!!)
             }
