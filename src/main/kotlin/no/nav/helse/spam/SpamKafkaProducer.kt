@@ -38,15 +38,15 @@ class SpamKafkaProducer(val config : SpamKafkaConfig) {
         return HashMap<String, Any>().apply {
             put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, config.kafkaBootstrapServers)
             if (config.plainTextKafka) {
-                //put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT")
+                put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT")
             } else {
                 put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL")
                 put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, File(config.navTruststorePath!!).absolutePath)
                 put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, config.navTruststorePassword!!)
             }
-            /*put(SaslConfigs.SASL_MECHANISM, "PLAIN")
+            put(SaslConfigs.SASL_MECHANISM, "PLAIN")
             put(SaslConfigs.SASL_JAAS_CONFIG,
-                "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"${config.kafkaUsername}\" password=\"${config.kafkaPassword}\";")*/
+                "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"${config.kafkaUsername}\" password=\"${config.kafkaPassword}\";")
         }
     }
 

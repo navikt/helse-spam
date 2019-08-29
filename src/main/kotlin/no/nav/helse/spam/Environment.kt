@@ -9,7 +9,8 @@ data class Environment (
     override val kafkaBootstrapServers: String,
     override val navTruststorePath: String?,
     override val navTruststorePassword: String?,
-    override val plainTextKafka: Boolean
+    override val plainTextKafka: Boolean,
+    val spamPassord: String?
 ) : SpamKafkaConfig
 
 @KtorExperimentalAPI
@@ -19,7 +20,8 @@ internal fun environmentFrom(config : ApplicationConfig) = Environment(
     kafkaBootstrapServers = config.property("kafka.bootstrap.servers").getString(),
     navTruststorePath = config.propertyOrNull("nav.truststore.path")?.getString(),
     navTruststorePassword = config.propertyOrNull("nav.truststore.password")?.getString(),
-    plainTextKafka = config.property("kafka.plaintext").getString().toBoolean()
+    plainTextKafka = config.property("kafka.plaintext").getString().toBoolean(),
+    spamPassord = config.propertyOrNull("spam.passord")?.getString()
 )
 
 private fun getEnvVar(varName: String, defaultValue: String? = null) =

@@ -10,7 +10,8 @@ $(document).ready(function() {
                 "arbeidsgiverId": $("#arbeidsgiverId").val(),
                 "fom": $("#fom").val(),
                 "tom": $("#tom").val(),
-                "dagsats": $("#dagsats").val()
+                "dagsats": $("#dagsats").val(),
+                "spamPassord": $("#spamPassord").val()
             }),
             contentType: "application/json",
             type: "POST",

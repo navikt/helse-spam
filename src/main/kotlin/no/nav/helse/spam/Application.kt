@@ -8,6 +8,7 @@ import io.ktor.application.install
 import io.ktor.application.log
 import io.ktor.features.ContentNegotiation
 import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.defaultResource
 import io.ktor.http.content.resources
 import io.ktor.http.content.static
@@ -18,7 +19,6 @@ import io.ktor.response.respondText
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.routing
-import no.nav.helse.behandling.SykepengeVedtak
 import no.nav.helse.streams.defaultObjectMapper
 import org.slf4j.LoggerFactory
 
@@ -33,8 +33,7 @@ fun Application.module(testing: Boolean = false) {
     log.info("Here we go...")
 
     val env = environmentFrom(this.environment.config)
-    //val producer = SpamKafkaProducer(env)
-    //producer.sendVedtak(lagEtTullevedtak())
+    val producer = SpamKafkaProducer(env)
 
     install(ContentNegotiation) {
         jackson {
@@ -46,7 +45,11 @@ fun Application.module(testing: Boolean = false) {
 
    routing {
        post("/vedtak") {
-           val request:SpamVedtak = call.receive<SpamVedtak>()
+           val request = call.receive<SpamVedtak>()
+           if (env.spamPassord != null && (env.spamPassord != request.spamPassord)) {
+               call.respond(HttpStatusCode.Unauthorized)
+               return@post
+           }
            val vedtak = lagVedtak(
                aktorId = request.aktorId,
                arbeidsgiverId = request.arbeidsgiverId,
@@ -54,7 +57,8 @@ fun Application.module(testing: Boolean = false) {
                tom = request.tom,
                dagsats = request.dagsats
            )
-           log.info(defaultObjectMapper.writeValueAsString(vedtak))
+           log.info("Sender: " + defaultObjectMapper.writeValueAsString(vedtak))
+           producer.sendVedtak(vedtak)
            call.respond(vedtak)
        }
 
@@ -71,10 +75,5 @@ fun Application.module(testing: Boolean = false) {
             resources("static")
         }
     }
-}
-
-private fun sendVedtak(vedtak: SykepengeVedtak) {
-    log.info("Sender: " + defaultObjectMapper.writeValueAsString(vedtak))
-    //producer.sendVedtak(vedtak)
 }
 
