@@ -30,7 +30,7 @@ private val log = LoggerFactory.getLogger("SpamServer")
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
 
-    log.info("Here we go...")
+    log.info("Here we do go...")
 
     val env = environmentFrom(this.environment.config)
     val producer = SpamKafkaProducer(env)
