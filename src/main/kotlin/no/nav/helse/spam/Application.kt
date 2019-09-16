@@ -21,6 +21,7 @@ import io.ktor.routing.post
 import io.ktor.routing.routing
 import no.nav.helse.streams.defaultObjectMapper
 import org.slf4j.LoggerFactory
+import java.util.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -50,12 +51,19 @@ fun Application.module(testing: Boolean = false) {
                call.respond(HttpStatusCode.Unauthorized)
                return@post
            }
+
+           var soknadId = UUID.randomUUID()
+           if (!request.soknadId.isNullOrBlank()) {
+               soknadId = UUID.fromString(request.soknadId.trim())
+           }
+
            val vedtak = lagVedtak(
                aktorId = request.aktorId,
                arbeidsgiverId = request.arbeidsgiverId,
                fom = request.fom,
                tom = request.tom,
-               dagsats = request.dagsats
+               dagsats = request.dagsats,
+               soknadId = soknadId
            )
            log.info("Sender: " + defaultObjectMapper.writeValueAsString(vedtak))
            producer.sendVedtak(vedtak)

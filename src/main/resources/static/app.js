@@ -11,7 +11,8 @@ $(document).ready(function() {
                 "fom": $("#fom").val(),
                 "tom": $("#tom").val(),
                 "dagsats": $("#dagsats").val(),
-                "spamPassord": $("#spamPassord").val()
+                "spamPassord": $("#spamPassord").val(),
+                "soknadId": $("#soknadId").val()
             }),
             contentType: "application/json",
             type: "POST",

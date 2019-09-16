@@ -12,6 +12,7 @@ data class SpamVedtak(
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     val tom: LocalDate,
     val dagsats: Long,
+    val soknadId: String?,
 
     val spamPassord: String
 )

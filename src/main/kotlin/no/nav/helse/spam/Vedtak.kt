@@ -28,9 +28,10 @@ fun lagVedtak(aktorId: String,
               fom:LocalDate,
               tom:LocalDate,
               dagsats:Long,
-              utbetalTilArbeidsgiver:Boolean = true) : SykepengeVedtak {
+              utbetalTilArbeidsgiver:Boolean = true,
+              soknadId:UUID = UUID.randomUUID()) : SykepengeVedtak {
 
-    val soknadId = UUID.randomUUID().toString()
+
     val mottager = if (utbetalTilArbeidsgiver) arbeidsgiverId else aktorId
 
     val perioder = listOf(
@@ -49,7 +50,7 @@ fun lagVedtak(aktorId: String,
     )
 
     val soknad = SykepengesøknadV2DTO(
-        id = soknadId,
+        id = soknadId.toString(),
         type = SoknadstypeDTO.ARBEIDSTAKERE,
         aktorId = aktorId,
         status = SoknadsstatusDTO.NY,
