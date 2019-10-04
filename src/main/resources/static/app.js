@@ -1,27 +1,36 @@
 
+window.addEventListener('DOMContentLoaded', function() {
+    console.log("DOMContentReady");
+    document.getElementById("submitbutton").addEventListener("click", function() {
+        console.log("submitbutton");
+        document.getElementById("infoMessage").innerHTML = "";
+        document.getElementById("errorMessage").innerHTML = "";
 
-$(document).ready(function() {
-    $("#submitbutton").click(function() {
-        $("#infoMessage").empty();
-        $("#errorMessage").empty();
-        $.ajax("/vedtak", {
-            data: JSON.stringify({
-                "aktorId": $("#aktorId").val(),
-                "arbeidsgiverId": $("#arbeidsgiverId").val(),
-                "fom": $("#fom").val(),
-                "tom": $("#tom").val(),
-                "dagsats": $("#dagsats").val(),
-                "spamPassord": $("#spamPassord").val(),
-                "soknadId": $("#soknadId").val()
+        fetch("/vedtak", {
+            method: 'POST',
+            body: JSON.stringify({
+                "aktorId": document.getElementById("aktorId").value,
+                "arbeidsgiverId": document.getElementById("arbeidsgiverId").value,
+                "fom": document.getElementById("fom").value,
+                "tom": document.getElementById("tom").value,
+                "dagsats": document.getElementById("dagsats").value,
+                "spamPassord": document.getElementById("spamPassord").value,
+                "soknadId": document.getElementById("soknadId").value
             }),
-            contentType: "application/json",
-            type: "POST",
-            success: function (result) {
-                $("#infoMessage").html("OK - Sendt:<br>--------<br>" + JSON.stringify(result));
-            },
-            error: function (xhr, status, error) {
-                $("#errorMessage").html("Feil: " + error);
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response) {
+            if (response.ok) {
+                response.json().then(function(jsonresp) {
+                    console.log(jsonresp);
+                    console.log('Success:', JSON.stringify(jsonresp));
+                    document.getElementById("infoMessage").innerHTML = "OK - Sendt:<br>--------<br>" + JSON.stringify(jsonresp);
+                });
+            } else {
+                document.getElementById("errorMessage").innerHTML = "Feil: " + response.status + " - " + response.statusText;
             }
         });
+
     });
 });
