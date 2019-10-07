@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>SPAMock</title>
-    <script src="app.js?v=2c"></script>
+    <script src="app.js?v=2d"></script>
     <link rel="stylesheet" type="text/css" href="app.css" />
 </head>
 <body>
@@ -17,25 +17,29 @@
     <label for="fom">Periode F.O.M.: </label><input id="fom" type="date"/><br/>
     <label for="tom">Periode T.O.M.: </label><input id="tom" type="date"/><br/>
     <label for="dagsats">Dagsats (kroner): </label><input id="dagsats" type="number"/><br/>
-    <label for="soknadId">SøknadsId (UUID): </label><input id="soknadId"/> (La stå tom for autogenerert søknadsId)<br/>
-
 
     <label for="sammenligningsperiode">Sammenligningsperiode</label>
-    <textarea id="sammenligningsperiode">[]</textarea> (Liste av inntekter)<br/>
+    <textarea id="sammenligningsperiode" rows="3" cols="80" >[]</textarea> (Liste av inntekter)<br/>
     <label for="beregningsperiode">Beregningsperiode</label>
-    <textarea id="beregningsperiode">[]</textarea> (Liste av inntekter)<br/>
+    <textarea id="beregningsperiode" rows="3" cols="80" >[]</textarea> (Liste av inntekter)<br/>
+
+    <label for="soknadId">SøknadsId (UUID): </label><input id="soknadId"/> (La stå tom for autogenerert søknadsId)<br/>
 
     <br/>
     <button id="submitbutton">Opprett og send tulle-vedtak</button><br/>
 
-    <br/>
-    <div id="errorMessage"></div>
-    <div id="infoMessage"></div>
+    <hr>
 
     <div id="hjelpepanel">
         <button id="laginntektbutton">Lag Inntekt-JSON</button><br/>
         <textarea id="hjelpedata" rows="5" cols="80" wrap="soft" readonly></textarea>
     </div>
+
+    <hr>
+    <br/>
+    <div id="errorMessage"></div>
+    <div id="infoMessage"></div>
+
 
 </body>
 </html>

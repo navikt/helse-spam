@@ -29,7 +29,11 @@ function sendTulleVedtak() {
                 document.getElementById("infoMessage").innerHTML = "OK - Sendt:<br>--------<br>" + JSON.stringify(jsonresp);
             });
         } else {
-            document.getElementById("errorMessage").innerHTML = "Feil: " + response.status + " - " + response.statusText;
+            response.text().then(function(textResp) {
+                document.getElementById("errorMessage").innerHTML = "Feil: " + response.status + " - " + response.statusText +
+                    " - " + textResp;
+            });
+
         }
     });
 }
