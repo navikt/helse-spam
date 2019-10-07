@@ -28,6 +28,8 @@ fun lagVedtak(aktorId: String,
               fom:LocalDate,
               tom:LocalDate,
               dagsats:Long,
+              beregningsperiode : List<Inntekt> = emptyList(),
+              sammenligningsperiode : List<Inntekt> = emptyList(),
               utbetalTilArbeidsgiver:Boolean = true,
               soknadId:UUID = UUID.randomUUID()) : SykepengeVedtak {
 
@@ -104,8 +106,8 @@ fun lagVedtak(aktorId: String,
         originalSøknad = Sykepengesøknad(soknad.asJsonNode()),
         faktagrunnlag = Faktagrunnlag(
             tps = tpsfakta,
-            beregningsperiode = emptyList(),
-            sammenligningsperiode = emptyList(),
+            beregningsperiode = beregningsperiode,
+            sammenligningsperiode = sammenligningsperiode,
             sykepengehistorikk = emptyList(),
             arbeidInntektYtelse = ArbeidInntektYtelseDTO(
                 arbeidsforhold = emptyList(),

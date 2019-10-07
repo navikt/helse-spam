@@ -19,8 +19,12 @@ import io.ktor.response.respondText
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.routing
+import no.nav.helse.oppslag.Inntekt
+import no.nav.helse.oppslag.Inntektsarbeidsgiver
 import no.nav.helse.streams.defaultObjectMapper
 import org.slf4j.LoggerFactory
+import java.math.BigDecimal
+import java.time.YearMonth
 import java.util.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -34,7 +38,7 @@ fun Application.module(testing: Boolean = false) {
     log.info("Here we do go...")
 
     val env = environmentFrom(this.environment.config)
-    val producer = SpamKafkaProducer(env)
+    //val producer = SpamKafkaProducer(env)
 
     install(ContentNegotiation) {
         jackson {
@@ -63,11 +67,29 @@ fun Application.module(testing: Boolean = false) {
                fom = request.fom,
                tom = request.tom,
                dagsats = request.dagsats,
+               beregningsperiode = request.beregningsperiode ?: emptyList(),
+               sammenligningsperiode = request.beregningsperiode ?: emptyList(),
                soknadId = soknadId
            )
            log.info("Sender: " + defaultObjectMapper.writeValueAsString(vedtak))
-           producer.sendVedtak(vedtak)
+           //producer.sendVedtak(vedtak)
            call.respond(vedtak)
+       }
+
+       get("/laginntekt") {
+           //call.request.queryParameters[]
+           call.respond(Inntekt(
+               virksomhet = Inntektsarbeidsgiver(
+                   identifikator = "998877665",
+                   type = "bedrift"
+               ),
+               utbetalingsperiode = YearMonth.of(2019, 7),
+               beløp =  BigDecimal.valueOf(1000),
+               type = "PÆNG",
+               ytelse = false,
+               kode = null)
+
+           )
        }
 
        get("/isalive") {

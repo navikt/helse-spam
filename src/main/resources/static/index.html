@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>SPAMock</title>
-    <script src="app.js?v=2"></script>
+    <script src="app.js?v=2c"></script>
     <link rel="stylesheet" type="text/css" href="app.css" />
 </head>
 <body>
@@ -18,12 +18,24 @@
     <label for="tom">Periode T.O.M.: </label><input id="tom" type="date"/><br/>
     <label for="dagsats">Dagsats (kroner): </label><input id="dagsats" type="number"/><br/>
     <label for="soknadId">SøknadsId (UUID): </label><input id="soknadId"/> (La stå tom for autogenerert søknadsId)<br/>
+
+
+    <label for="sammenligningsperiode">Sammenligningsperiode</label>
+    <textarea id="sammenligningsperiode">[]</textarea> (Liste av inntekter)<br/>
+    <label for="beregningsperiode">Beregningsperiode</label>
+    <textarea id="beregningsperiode">[]</textarea> (Liste av inntekter)<br/>
+
     <br/>
     <button id="submitbutton">Opprett og send tulle-vedtak</button><br/>
 
     <br/>
     <div id="errorMessage"></div>
     <div id="infoMessage"></div>
+
+    <div id="hjelpepanel">
+        <button id="laginntektbutton">Lag Inntekt-JSON</button><br/>
+        <textarea id="hjelpedata" rows="5" cols="80" wrap="soft" readonly></textarea>
+    </div>
 
 </body>
 </html>
