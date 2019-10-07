@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>SPAMock</title>
     <script src="app.js?v=2e"></script>
-    <link rel="stylesheet" type="text/css" href="app.css" />
+    <link rel="stylesheet" type="text/css" href="app.css?v=2b" />
 </head>
 <body>
     <h3>SPAMock</h3>
@@ -19,12 +19,16 @@
     <label for="tom">Periode T.O.M.: </label><input id="tom" type="date"/><br/>
     <label for="dagsats">Dagsats (kroner): </label><input id="dagsats" type="number"/><br/>
 
-    <label for="sammenligningsperiode">Sammenligningsperiode</label>
+    <label for="sammenligningsperiode">Sammenligningsperiode:</label>
     <textarea id="sammenligningsperiode" rows="3" cols="80" >[]</textarea> (Liste av inntekter)<br/>
-    <label for="beregningsperiode">Beregningsperiode</label>
+    <label for="beregningsperiode">Beregningsperiode:</label>
     <textarea id="beregningsperiode" rows="3" cols="80" >[]</textarea> (Liste av inntekter)<br/>
+    ("Liste av inntekter" er kommaseparerte inntektsobjekter (se "Lag Inntekt-JSON" nedenfor) omsluttet av en firkantparentes)<br/>
 
+
+    <div style="display: none;">
     <label for="soknadId">SøknadsId (UUID): </label><input id="soknadId"/> (La stå tom for autogenerert søknadsId)<br/>
+    </div>
 
     <br/>
     <button id="submitbutton">Opprett og send tulle-vedtak</button><br/>

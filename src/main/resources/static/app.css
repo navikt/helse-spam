@@ -5,9 +5,15 @@ body {
 
 label {
     display: inline-block;
-    width: 140px;
+    width: 156px;
     text-align: right;
     padding: 5px;
+}
+
+label,
+textarea{
+    display:inline-block;
+    vertical-align:middle;
 }
 
 input {
