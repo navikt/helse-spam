@@ -1,7 +1,9 @@
 package no.nav.helse.spam
 
+import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -50,15 +52,23 @@ fun Application.module(testing: Boolean = false) {
 
    routing {
        post("/vedtak") {
-           val request = call.receive<SpamVedtak>()
+           var request:SpamVedtak
+           try {
+               request = call.receive<SpamVedtak>()
+           } catch (jsonError: JsonProcessingException) {
+               log.info("JsonProcessingException: ", jsonError)
+               call.respond(HttpStatusCode.BadRequest,
+                   "Feil her: ${jsonError.location.sourceDescription()} ----- (${jsonError.message})")
+               return@post
+           }
            if (env.spamPassord != null && (env.spamPassord != request.spamPassord)) {
-               call.respond(HttpStatusCode.Unauthorized)
+               call.respond(HttpStatusCode.Unauthorized, "Husk å legge inn SPAM-Passord")
                return@post
            }
 
            var soknadId = UUID.randomUUID()
            if (!request.soknadId.isNullOrBlank()) {
-               soknadId = UUID.fromString(request.soknadId.trim())
+               soknadId = UUID.fromString(request.soknadId!!.trim())
            }
 
            val vedtak = lagVedtak(
