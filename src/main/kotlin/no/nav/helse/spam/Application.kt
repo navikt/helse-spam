@@ -40,7 +40,7 @@ fun Application.module(testing: Boolean = false) {
     log.info("Here we do go...")
 
     val env = environmentFrom(this.environment.config)
-    val producer = SpamKafkaProducer(env)
+    val producer = if (env.disableKafka) null else SpamKafkaProducer(env)
 
     install(ContentNegotiation) {
         jackson {
@@ -82,7 +82,7 @@ fun Application.module(testing: Boolean = false) {
                soknadId = soknadId
            )
            log.info("Sender: " + defaultObjectMapper.writeValueAsString(vedtak))
-           producer.sendVedtak(vedtak)
+           producer?.sendVedtak(vedtak)
            call.respond(vedtak)
        }
 
