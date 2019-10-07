@@ -58,7 +58,7 @@ fun Application.module(testing: Boolean = false) {
            } catch (jsonError: JsonProcessingException) {
                log.info("JsonProcessingException: ", jsonError)
                call.respond(HttpStatusCode.BadRequest,
-                   "Feil her: ${jsonError.location.sourceDescription()} ----- (${jsonError.message})")
+                   "Feil her: ${jsonError.message}")
                return@post
            }
            if (env.spamPassord != null && (env.spamPassord != request.spamPassord)) {
@@ -74,6 +74,7 @@ fun Application.module(testing: Boolean = false) {
            val vedtak = lagVedtak(
                aktorId = request.aktorId,
                arbeidsgiverId = request.arbeidsgiverId,
+               arbeidsgiverNavn = request.arbeidsgiverNavn ?: "thaWorkPlace",
                fom = request.fom,
                tom = request.tom,
                dagsats = request.dagsats,

@@ -8,6 +8,7 @@ function sendTulleVedtak() {
         body: JSON.stringify({
             "aktorId": document.getElementById("aktorId").value,
             "arbeidsgiverId": document.getElementById("arbeidsgiverId").value,
+            "arbeidsgiverNavn": document.getElementById("arbeidsgiverNavn").value,
             "fom": document.getElementById("fom").value,
             "tom": document.getElementById("tom").value,
             "dagsats": document.getElementById("dagsats").value,

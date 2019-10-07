@@ -8,6 +8,7 @@ data class SpamVedtak(
     val aktorId: String,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     val arbeidsgiverId: String,
+    val arbeidsgiverNavn: String?,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     val fom: LocalDate,
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")

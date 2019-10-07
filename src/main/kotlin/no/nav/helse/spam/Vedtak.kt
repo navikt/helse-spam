@@ -30,6 +30,7 @@ fun lagVedtak(aktorId: String,
               dagsats:Long,
               beregningsperiode : List<Inntekt> = emptyList(),
               sammenligningsperiode : List<Inntekt> = emptyList(),
+              arbeidsgiverNavn: String = "ThaWorkpplace",
               utbetalTilArbeidsgiver:Boolean = true,
               soknadId:UUID = UUID.randomUUID()) : SykepengeVedtak {
 
@@ -57,7 +58,7 @@ fun lagVedtak(aktorId: String,
         aktorId = aktorId,
         status = SoknadsstatusDTO.NY,
         arbeidsgiver = ArbeidsgiverDTO(
-            navn = "TheWorkpplace",
+            navn = arbeidsgiverNavn,
             orgnummer = arbeidsgiverId
         ),
         soktUtenlandsopphold = false,
