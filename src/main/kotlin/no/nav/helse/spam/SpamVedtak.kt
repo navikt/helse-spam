@@ -1,7 +1,6 @@
 package no.nav.helse.spam
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import no.nav.helse.oppslag.Inntekt
 import java.time.LocalDate
 
 data class SpamVedtak(
@@ -15,9 +14,6 @@ data class SpamVedtak(
     val tom: LocalDate,
     val dagsats: Long,
     val soknadId: String?,
-
-    val beregningsperiode : List<Inntekt>?,
-    val sammenligningsperiode : List<Inntekt>?,
 
     val spamPassord: String
 )

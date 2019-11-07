@@ -1,6 +1,6 @@
 package no.nav.helse.spam
 
-import no.nav.helse.behandling.SykepengeVedtak
+import no.nav.helse.Utbetalingsbehov
 import no.nav.helse.streams.defaultObjectMapper
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.producer.KafkaProducer
@@ -22,7 +22,7 @@ interface SpamKafkaConfig {
 
 class SpamKafkaProducer(val config : SpamKafkaConfig) {
 
-    val vedtakTopic = "aapen-helse-sykepenger-vedtak"
+    val vedtakTopic = "privat-helse-sykepenger-behov"
     private val log = LoggerFactory.getLogger("SpamKafkaProducer")
 
     val producer : KafkaProducer<String, String>
@@ -31,8 +31,8 @@ class SpamKafkaProducer(val config : SpamKafkaConfig) {
         producer = KafkaProducer<String, String>(producerProperties(), StringSerializer(), StringSerializer())
     }
 
-    fun sendVedtak(sykepengeVedtak: SykepengeVedtak) {
-        producer.send(ProducerRecord(vedtakTopic, sykepengeVedtak.originalSøknad.id, defaultObjectMapper.writeValueAsString(sykepengeVedtak)))
+    fun sendBehov(behov: Utbetalingsbehov) {
+        producer.send(ProducerRecord(vedtakTopic, behov.sakskompleksId.toString(), defaultObjectMapper.writeValueAsString(behov)))
         producer.flush()
     }
 

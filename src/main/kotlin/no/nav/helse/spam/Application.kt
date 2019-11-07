@@ -3,7 +3,6 @@ package no.nav.helse.spam
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -21,13 +20,11 @@ import io.ktor.response.respondText
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.routing
-import no.nav.helse.oppslag.Inntekt
-import no.nav.helse.oppslag.Inntektsarbeidsgiver
+import no.nav.helse.Utbetalingsbehov
+import no.nav.helse.Utbetalingslinje
 import no.nav.helse.streams.defaultObjectMapper
 import org.slf4j.LoggerFactory
-import java.math.BigDecimal
-import java.time.YearMonth
-import java.util.*
+import java.util.UUID
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -50,68 +47,54 @@ fun Application.module(testing: Boolean = false) {
         }
     }
 
-   routing {
-       post("/vedtak") {
-           var request:SpamVedtak
-           try {
-               request = call.receive<SpamVedtak>()
-           } catch (jsonError: JsonProcessingException) {
-               log.info("JsonProcessingException: ", jsonError)
-               call.respond(HttpStatusCode.BadRequest,
-                   "Feil her: ${jsonError.message}")
-               return@post
-           }
-           if (env.spamPassord != null && (env.spamPassord != request.spamPassord)) {
-               call.respond(HttpStatusCode.Unauthorized, "Husk å legge inn SPAM-Passord")
-               return@post
-           }
+    routing {
+        post("/vedtak") {
+            var request:SpamVedtak
+            try {
+                request = call.receive<SpamVedtak>()
+            } catch (jsonError: JsonProcessingException) {
+                log.info("JsonProcessingException: ", jsonError)
+                call.respond(HttpStatusCode.BadRequest,
+                    "Feil her: ${jsonError.message}")
+                return@post
+            }
+            if (env.spamPassord != null && (env.spamPassord != request.spamPassord)) {
+                call.respond(HttpStatusCode.Unauthorized, "Husk å legge inn SPAM-Passord")
+                return@post
+            }
 
-           var soknadId = UUID.randomUUID()
-           if (!request.soknadId.isNullOrBlank()) {
-               soknadId = UUID.fromString(request.soknadId!!.trim())
-           }
+            var soknadId = request.soknadId?.trim().let { UUID.fromString(it) } ?: UUID.randomUUID()
 
-           val vedtak = lagVedtak(
-               aktorId = request.aktorId,
-               arbeidsgiverId = request.arbeidsgiverId,
-               arbeidsgiverNavn = request.arbeidsgiverNavn ?: "thaWorkPlace",
-               fom = request.fom,
-               tom = request.tom,
-               dagsats = request.dagsats,
-               beregningsperiode = request.beregningsperiode ?: emptyList(),
-               sammenligningsperiode = request.beregningsperiode ?: emptyList(),
-               soknadId = soknadId
-           )
-           log.info("Sender: " + defaultObjectMapper.writeValueAsString(vedtak))
-           producer?.sendVedtak(vedtak)
-           call.respond(vedtak)
-       }
+            val utbetalingsbehov = Utbetalingsbehov(
+                behov = "Utbetaling",
+                sakskompleksId = soknadId,
+                aktørId = request.aktorId,
+                organisasjonsnummer = request.arbeidsgiverId,
+                maksdato = request.tom.plusMonths(1),
+                saksbehandler = "Z999999",
+                utbetalingslinjer = listOf(
+                    Utbetalingslinje(
+                        fom = request.fom,
+                        tom = request.tom,
+                        grad = 100,
+                        dagsats = request.dagsats.toBigDecimal()
+                    )
+                )
+            )
+            log.info("Sender: " + defaultObjectMapper.writeValueAsString(utbetalingsbehov))
+            producer?.sendBehov(utbetalingsbehov)
+            call.respond(utbetalingsbehov)
+        }
 
-       get("/laginntekt") {
-           //call.request.queryParameters[]
-           call.respond(Inntekt(
-               virksomhet = Inntektsarbeidsgiver(
-                   identifikator = "998877665",
-                   type = "bedrift"
-               ),
-               utbetalingsperiode = YearMonth.of(2019, 7),
-               beløp =  BigDecimal.valueOf(1000),
-               type = "PÆNG",
-               ytelse = false,
-               kode = null)
+        get("/isalive") {
+            call.respondText("ALIVE", ContentType.Text.Plain)
+        }
 
-           )
-       }
+        get("/isready") {
+            call.respondText("READY", ContentType.Text.Plain)
+        }
 
-       get("/isalive") {
-           call.respondText("ALIVE", ContentType.Text.Plain)
-       }
-
-       get("/isready") {
-           call.respondText("READY", ContentType.Text.Plain)
-       }
-
-       static {
+        static {
             defaultResource("index.html", "static")
             resources("static")
         }
