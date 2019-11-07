@@ -63,7 +63,13 @@ fun Application.module(testing: Boolean = false) {
                 return@post
             }
 
-            var soknadId = request.soknadId?.trim().let { UUID.fromString(it) } ?: UUID.randomUUID()
+            val soknadId = request.soknadId?.trim().let {
+                if (it.isNullOrEmpty()) {
+                    UUID.randomUUID()
+                } else {
+                    UUID.fromString(it)
+                }
+            }
 
             val utbetalingsbehov = Utbetalingsbehov(
                 behov = "Utbetaling",
