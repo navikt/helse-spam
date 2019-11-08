@@ -63,7 +63,7 @@ fun Application.module(testing: Boolean = false) {
                 return@post
             }
 
-            val soknadId = request.soknadId?.trim().let {
+            val sakskompleksId = request.soknadId?.trim().let {
                 if (it.isNullOrEmpty()) {
                     UUID.randomUUID()
                 } else {
@@ -73,7 +73,7 @@ fun Application.module(testing: Boolean = false) {
 
             val utbetalingsbehov = Utbetalingsbehov(
                 behov = "Utbetaling",
-                sakskompleksId = soknadId,
+                sakskompleksId = sakskompleksId,
                 aktørId = request.aktorId,
                 organisasjonsnummer = request.arbeidsgiverId,
                 maksdato = request.tom.plusMonths(1),
