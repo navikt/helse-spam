@@ -18,7 +18,7 @@ class VedtakTest {
         val tom = LocalDate.now().minusDays(1);
 
         val vedtak = Utbetalingsbehov(
-            behov = "Utbetaling",
+            behov = listOf("Utbetaling"),
             sakskompleksId = UUID.randomUUID(),
             aktørId = aktorId,
             organisasjonsnummer = arbeidsgiverId,

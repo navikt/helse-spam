@@ -72,7 +72,7 @@ fun Application.module(testing: Boolean = false) {
             }
 
             val utbetalingsbehov = Utbetalingsbehov(
-                behov = "Utbetaling",
+                behov = listOf("Utbetaling"),
                 sakskompleksId = sakskompleksId,
                 aktørId = request.aktorId,
                 organisasjonsnummer = request.arbeidsgiverId,

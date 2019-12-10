@@ -9,7 +9,7 @@ import java.util.UUID
 
 data class Utbetalingsbehov(
     @JsonProperty("@behov")
-    val behov: String,
+    val behov: List<String>,
     val sakskompleksId: UUID,
     val utbetalingsreferanse: String = sakskompleksId.base32Encode(),
     val aktørId: String,
