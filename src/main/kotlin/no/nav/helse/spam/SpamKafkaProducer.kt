@@ -22,7 +22,7 @@ interface SpamKafkaConfig {
 
 class SpamKafkaProducer(val config : SpamKafkaConfig) {
 
-    val vedtakTopic = "privat-helse-sykepenger-behov"
+    val vedtakTopic = "privat-helse-sykepenger-rapid-v1"
     private val log = LoggerFactory.getLogger("SpamKafkaProducer")
 
     val producer : KafkaProducer<String, String>
